@@ -1,19 +1,44 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useContext } from "react";
+import { Link, Navigate } from "react-router-dom";
 import register from "../assets/lotie/register.json";
 import Lottie from "lottie-react";
 
+import AuthContext from "../Context/AuthContext";
+
 const Register = () => {
+  const { newUser, setUser, setLoader, googleLogIn } = useContext(AuthContext);
+  const handelGoogle = () => {
+    //     console.log(googleLogin);
+    googleLogIn()
+      .then((result) => {
+        setUser(result.user);
+        alert("successful");
+      })
+      .catch((error) => {
+        console.log(error.message);
+      });
+  };
   const handleRegister = (e) => {
-    e.target.preventDefault();
-    const from = e.target;
-    const name = from.name.value;
+    e.preventDefault();
+    const form = e.target;
+    const name = form.name.value;
     const email = form.email.value;
     const photoURL = form.photoURL.value;
     const password = form.password.value;
     const myUser = { name, email, photoURL, password };
     console.log(myUser);
+    newUser(email, password)
+      .then((data) => {
+        const value = data.user;
+        //   setLoader(false);
+        setUser(value);
+        console.log(value);
+      })
+      .catch((error) => {
+        console.log(error.message);
+      });
   };
+
   return (
     <>
       <div className="flex items-center pb-4  justify-around flex-wrap-reverse pt-2 sm:pt-4 dark:bg-slate-900 bg-gray-100">
@@ -101,7 +126,7 @@ const Register = () => {
           {/* Google Login Button */}
           <button className="w-full px-4 py-2 mt-4 text-gray-700 border border-gray-300 rounded-lg hover:bg-gray-200 focus:outline-none">
             <div
-              //   onClick={handelGoogle}
+              onClick={handelGoogle}
               className="flex items-center gap-2 justify-center"
             >
               <img

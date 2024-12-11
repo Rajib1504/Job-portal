@@ -1,8 +1,10 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import loginAnimation from "../assets/lotie/login.json";
 import Lottie from "lottie-react";
+import AuthContext from "../Context/AuthContext";
 const Login = () => {
+  const { Login, setUser } = useContext(AuthContext);
   const handelLogin = (e) => {
     e.preventDefault();
     const form = e.target;
@@ -10,6 +12,15 @@ const Login = () => {
     const password = form.password.value;
     const user = { email, password };
     console.log(user);
+    Login(email, password)
+      .then((data) => {
+        const value = data.user;
+        //   console.log(value);
+        setUser(value);
+      })
+      .catch((error) => {
+        console.log(error.message);
+      });
   };
   return (
     <>
