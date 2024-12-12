@@ -1,10 +1,11 @@
 import React, { useContext } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import loginAnimation from "../assets/lotie/login.json";
 import Lottie from "lottie-react";
 import AuthContext from "../Context/AuthContext";
 const Login = () => {
-  const { Login, setUser } = useContext(AuthContext);
+  const { Login, setUser, googleLogIn } = useContext(AuthContext);
+  const navigate = useNavigate();
   const handelLogin = (e) => {
     e.preventDefault();
     const form = e.target;
@@ -21,6 +22,14 @@ const Login = () => {
       .catch((error) => {
         console.log(error.message);
       });
+  };
+  const handleGoogleLogin = () => {
+    googleLogIn()
+      .then((result) => {
+        setUser(result.user);
+        navigate("/");
+      })
+      .catch((error) => console.log(error.message));
   };
   return (
     <>
@@ -84,7 +93,7 @@ const Login = () => {
           </form>
           {/* Google Login Button */}
           <button
-            // onClick={handleGoogleLogin}
+            onClick={handleGoogleLogin}
             className="w-full px-4 py-2 mt-4 text-gray-700 border border-gray-300 rounded-lg hover:bg-gray-200 focus:outline-none"
           >
             <div
@@ -107,7 +116,7 @@ const Login = () => {
             </Link>
           </p>
         </div>
-        <Lottie className="w-72" animationData={loginAnimation}></Lottie>
+        <Lottie className="w-96" animationData={loginAnimation}></Lottie>
       </div>
     </>
   );
