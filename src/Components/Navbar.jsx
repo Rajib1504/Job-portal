@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import AuthContext from "../Context/AuthContext";
 import Logo from "../assets/logo.png";
 const Navbar = () => {
@@ -7,10 +7,19 @@ const Navbar = () => {
   const links = (
     <>
       <li>
-        <a>Item 1</a>
+        <NavLink to={"/"}>Home</NavLink>
       </li>
       <li>
-        <a>Item 3</a>
+        <NavLink to={"/"}>Home</NavLink>
+      </li>
+      <li>
+        <NavLink to={"/"}>Home</NavLink>
+      </li>
+      <li>
+        <NavLink to={"/"}>Home</NavLink>
+      </li>
+      <li>
+        <NavLink to={"/"}>Home</NavLink>
       </li>
     </>
   );
@@ -42,8 +51,9 @@ const Navbar = () => {
               {links}
             </ul>
           </div>
-          {/* <a className="btn btn-ghost text-xl">daisyUI</a> */}
-          <img className="w-10" src={Logo} alt="" />
+          <a className="btn btn-ghost text-xl">
+            <img className="w-10" src={Logo} alt="" />
+          </a>
         </div>
         <div className="navbar-center hidden lg:flex">
           <ul className="menu menu-horizontal px-1">{links}</ul>
