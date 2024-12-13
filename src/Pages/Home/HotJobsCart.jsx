@@ -1,9 +1,11 @@
 import { title } from "motion/react-client";
 import React from "react";
 import { FaMapMarkerAlt, FaRegClock, FaBolt } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 const HotJobsCart = ({ job }) => {
+  const weblocation = useLocation();
+  console.log(weblocation);
   console.log(job);
   const {
     _id,

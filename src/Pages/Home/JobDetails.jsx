@@ -9,9 +9,14 @@ import {
   MapPin,
 } from "lucide-react";
 import React from "react";
-import { useLoaderData } from "react-router-dom";
-
+import { Link, Navigate, useLoaderData, useLocation } from "react-router-dom";
 const JobDetails = () => {
+  // const location = useLocation();
+  // const handleBack = () => {
+  //   console.log("loction in the details page", location);
+  //   return location.state;
+  // };
+
   const job = useLoaderData();
   console.log(job);
   return (
@@ -122,12 +127,14 @@ const JobDetails = () => {
 
           {/* Apply Button */}
           <div className="p-6 bg-gray-50 flex justify-center">
-            <button
-              //   onClick={handleApply}
-              className="bg-blue-600 text-white px-8 py-3 rounded-lg hover:bg-blue-700 transition duration-300 text-lg font-semibold"
-            >
-              Apply Now
-            </button>
+            <Link to={`/applyform/${job._id}`}>
+              <button
+                //   onClick={handleApply}
+                className="bg-blue-600 text-white px-8 py-3 rounded-lg hover:bg-blue-700 transition duration-300 text-lg font-semibold"
+              >
+                Apply Now
+              </button>
+            </Link>
 
             {/* <div className="text-green-600 flex items-center space-x-2">
               <CheckCircle className="w-8 h-8" />
