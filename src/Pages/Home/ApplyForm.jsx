@@ -1,6 +1,53 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Github, Linkedin, Link, Image, Send } from "lucide-react";
+import { useParams } from "react-router-dom";
+import useAuth from "../../Hooks/useAuth";
+import Swal from "sweetalert2";
+
 const ApplyForm = () => {
+  const { id } = useParams();
+  const { user } = useAuth();
+  //   console.log(id, user);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const form = e.target;
+    const github = form.github.value;
+    const linkdin = form.linkdin.value;
+    const resume = form.resume.value;
+    const profileImage = form.profileImage.value;
+    //     console.log(github, linkdin, resume, profileImage);
+    const jobApplication = {
+      job_id: id,
+      Applicant_email: user.email,
+      github,
+      linkdin,
+      resume,
+      profileImage,
+    };
+    // console.log(jobApplication);
+
+    fetch("http://localhost:9000/job-application", {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify(jobApplication),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.insertedId) {
+          Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: "Your work has been saved",
+            showConfirmButton: false,
+            timer: 1500,
+          });
+        }
+        console.log;
+      });
+  };
   return (
     <div>
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-blue-100 flex items-center justify-center p-4">
@@ -16,7 +63,7 @@ const ApplyForm = () => {
           </div>
 
           {/* Form Container */}
-          <div className="p-6 space-y-6">
+          <form onSubmit={handleSubmit} className="p-6 space-y-6">
             {/* GitHub Input */}
             <div className="relative">
               <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
@@ -24,6 +71,7 @@ const ApplyForm = () => {
               </div>
               <input
                 type="url"
+                name="github"
                 placeholder="GitHub Profile URL"
                 className="w-full pl-12 pr-4 py-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-blue-500 transition-all"
               />
@@ -36,6 +84,7 @@ const ApplyForm = () => {
               </div>
               <input
                 type="url"
+                name="linkdin"
                 placeholder="LinkedIn Profile URL"
                 className="w-full pl-12 pr-4 py-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-blue-500 transition-all"
               />
@@ -48,6 +97,7 @@ const ApplyForm = () => {
               </div>
               <input
                 type="url"
+                name="resume"
                 placeholder="Resume / CV Link"
                 className="w-full pl-12 pr-4 py-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-blue-500 transition-all"
               />
@@ -60,6 +110,7 @@ const ApplyForm = () => {
               </div>
               <input
                 type="url"
+                name="profileImage"
                 placeholder="Profile Image URL"
                 className="w-full pl-12 pr-4 py-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-blue-500 transition-all"
               />
@@ -70,7 +121,7 @@ const ApplyForm = () => {
               <Send className="w-5 h-5" />
               <span>Submit Links</span>
             </button>
-          </div>
+          </form>
         </div>
       </div>
     </div>
