@@ -2,7 +2,7 @@ import React from "react";
 // import logo from "../assets/logo.png";
 const Footer = () => {
   return (
-    <div>
+    <div className="w-full">
       <footer className="footer bg-base-200 text-base-content p-10">
         <aside>
           {/* <img src={logo} alt="" /> */}

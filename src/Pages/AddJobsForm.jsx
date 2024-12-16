@@ -1,10 +1,42 @@
 import React from "react";
+import Swal from "sweetalert2";
 
 const AddJobsForm = () => {
   const handleSubmit = (e) => {
-    const FormData = new FormData(e.target);
-    console.log(FormData);
+    e.preventDefault();
+    const formData = new FormData(e.target);
+    // console.log(formData);
+    const initialData = Object.fromEntries(formData.entries());
+    // console.log(initialData); //we get all our form data in a key value pair and in object
+    const { currency, minSalary, maxSalary, ...newJob } = initialData;
+    // console.log(newJob);
+    newJob.salaryRange = { currency, minSalary, maxSalary }; // salary is become in a object
+    // console.log(newJob);
+    newJob.jobResponsibility = newJob.jobResponsibility.split("\n");
+    newJob.jobRequirements = newJob.jobRequirements.split("\n");
+    console.log(newJob);
+    fetch("http://localhost:9000/job", {
+      method: "POST",
+      headers: {
+        "content-type": "application/Json",
+      },
+      body: JSON.stringify(newJob),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        if ("insertedId") {
+          Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: "We Add request in portal",
+            showConfirmButton: false,
+            timer: 1500,
+          });
+        }
+      });
   };
+
   return (
     <div>
       <form
