@@ -3,10 +3,10 @@ import React from "react";
 import { FaMapMarkerAlt, FaRegClock, FaBolt } from "react-icons/fa";
 import { Link, useLocation } from "react-router-dom";
 
-const HotJobsCart = ({ job }) => {
+const HotJobsCart = ({ jb }) => {
   const weblocation = useLocation();
   console.log(weblocation);
-  console.log(job);
+  console.log(jb);
   const {
     _id,
     applicationDeadline,
@@ -21,7 +21,7 @@ const HotJobsCart = ({ job }) => {
     status,
     requirements,
     title,
-  } = job;
+  } = jb;
 
   return (
     <div>
@@ -60,8 +60,11 @@ const HotJobsCart = ({ job }) => {
 
         {/* Tags */}
         <div className="flex gap-2 flex-wrap justify-start items-center mb-4">
-          {requirements.map((reqirement) => (
-            <span className="px-3 py-1 bg-gray-200 rounded-lg text-sm">
+          {requirements.map((reqirement, idx) => (
+            <span
+              key={idx}
+              className="px-3 py-1 bg-gray-200 rounded-lg text-sm"
+            >
               {reqirement}
             </span>
           ))}

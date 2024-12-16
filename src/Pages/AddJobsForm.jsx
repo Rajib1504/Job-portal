@@ -1,19 +1,22 @@
 import React from "react";
 import Swal from "sweetalert2";
+import useAuth from "../Hooks/useAuth";
+import { Navigate } from "react-router-dom";
 
 const AddJobsForm = () => {
+  const { user } = useAuth();
   const handleSubmit = (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
     // console.log(formData);
     const initialData = Object.fromEntries(formData.entries());
     // console.log(initialData); //we get all our form data in a key value pair and in object
-    const { currency, minSalary, maxSalary, ...newJob } = initialData;
+    const { currency, min, max, ...newJob } = initialData;
     // console.log(newJob);
-    newJob.salaryRange = { currency, minSalary, maxSalary }; // salary is become in a object
+    newJob.salaryRange = { currency, min, max }; // salary is become in a object
     // console.log(newJob);
-    newJob.jobResponsibility = newJob.jobResponsibility.split("\n");
-    newJob.jobRequirements = newJob.jobRequirements.split("\n");
+    newJob.responsibilities = newJob.responsibilities.split("\n");
+    newJob.requirements = newJob.requirements.split("\n");
     console.log(newJob);
     fetch("http://localhost:9000/job", {
       method: "POST",
@@ -33,6 +36,7 @@ const AddJobsForm = () => {
             showConfirmButton: false,
             timer: 1500,
           });
+          <Navigate to={"/myjobs"}></Navigate>;
         }
       });
   };
@@ -51,7 +55,7 @@ const AddJobsForm = () => {
           </label>
           <input
             type="url"
-            name="companyLogo"
+            name="company_logo"
             placeholder="Company logo"
             className="input input-bordered"
             required
@@ -64,7 +68,7 @@ const AddJobsForm = () => {
           </label>
           <input
             type="text"
-            name="companyName"
+            name="company"
             placeholder="Give Company name"
             className="input input-bordered"
             required
@@ -77,19 +81,18 @@ const AddJobsForm = () => {
         <div className="flex justify-between gap-2 items-center">
           <input
             type="text"
-            name="companyLocation"
+            name="location"
             placeholder="Company Location"
             className="input pr-0 pl-[3px] input-bordered"
             required
           />
           <select
+            defaultValue={"Select Job type"}
             name="jobType"
             className="select select-bordere input-bordered w-full max-w-xs"
             required
           >
-            <option disabled selected>
-              Select Job type
-            </option>
+            <option disabled>Select Job type</option>
             <option>Remote</option>
             <option>Hybrid</option>
             <option>On-side</option>
@@ -98,13 +101,12 @@ const AddJobsForm = () => {
           </select>
         </div>
         <select
-          name="jobField"
+          defaultValue={"Select Job field"}
+          name="category"
           className="select select-bordere input-bordered w-full"
           required
         >
-          <option disabled selected>
-            Select Job field
-          </option>
+          <option disabled>Select Job field</option>
           <option>Enginneering</option>
           <option>Finance</option>
           <option>Marketing</option>
@@ -118,7 +120,7 @@ const AddJobsForm = () => {
         <div className="flex justify-between gap-2 items-center">
           <input
             type="text"
-            name="minSalary"
+            name="min"
             placeholder="Min-salary"
             minLength={1}
             className="input pr-0 pl-[3px] input-bordered"
@@ -126,7 +128,7 @@ const AddJobsForm = () => {
           />
           <input
             type="number"
-            name="maxSalary"
+            name="max"
             minLength={1}
             placeholder="Max-salary"
             className="input pr-0 pl-[3px] input-bordered"
@@ -135,13 +137,12 @@ const AddJobsForm = () => {
         </div>
 
         <select
+          defaultValue={"Select Currency"}
           name="currency"
           className="select select-bordere input-bordered w-full"
           required
         >
-          <option disabled selected>
-            Select Currency
-          </option>
+          <option disabled>Select Currency</option>
           <option>INR</option>
           <option>USD</option>
           <option>EURO</option>
@@ -155,16 +156,16 @@ const AddJobsForm = () => {
         <div className="flex justify-between gap-2 items-center">
           <input
             type="text"
-            name="jobStatus"
+            name="status"
             placeholder="Job Status"
             className="input pr-0 pl-[3px] input-bordered"
             required
           />
           <input
-            type="text"
+            type="date"
             name="applicationDeadline"
             placeholder="Application Deadline"
-            className="input pr-0 pl-[3px] input-bordered"
+            className="input input-bordered"
             required
           />
         </div>
@@ -174,7 +175,7 @@ const AddJobsForm = () => {
             <span className="label-text">Job Description</span>
           </label>
           <textarea
-            name="jobDescription"
+            name="description"
             placeholder="Job Description"
             className="textarea pl-2 py-2 text-sm min-h-20 textarea-bordered textarea-lg w-full max-w-sm"
             required
@@ -185,7 +186,7 @@ const AddJobsForm = () => {
             <span className="label-text">Job Responsibility</span>
           </label>
           <textarea
-            name="jobResponsibility"
+            name="responsibilities"
             placeholder="Write each responsibility in a new line"
             className="textarea pl-2 py-2 text-sm min-h-20 textarea-bordered textarea-lg w-full max-w-sm"
             required
@@ -196,7 +197,7 @@ const AddJobsForm = () => {
             <span className="label-text">Job Requirements</span>
           </label>
           <textarea
-            name="jobRequirements"
+            name="requirements"
             placeholder="Write each requirement in a new line"
             className="textarea pl-2 py-2 text-sm min-h-20 textarea-bordered textarea-lg w-full max-w-sm"
             required
@@ -208,7 +209,7 @@ const AddJobsForm = () => {
         <div className="form-control">
           <input
             type="text"
-            name="hrName"
+            name="hr_name"
             placeholder="HR_Name"
             className="input input-bordered"
             required
@@ -217,7 +218,8 @@ const AddJobsForm = () => {
         <div className="form-control">
           <input
             type="text"
-            name="hrEmail"
+            defaultValue={user?.email}
+            name="hr_email"
             placeholder="HR_email"
             className="input input-bordered"
             required
