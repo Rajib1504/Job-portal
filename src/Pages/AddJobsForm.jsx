@@ -74,6 +74,19 @@ const AddJobsForm = () => {
             required
           />
         </div>
+        {/* job title  */}
+        <div className="form-control">
+          <label className="label">
+            <span className="label-text">Title</span>
+          </label>
+          <input
+            type="text"
+            name="title"
+            placeholder="Job Title"
+            className="input input-bordered"
+            required
+          />
+        </div>
         {/* job details */}
         <label className="label">
           <span className="label-text">Job Details</span>

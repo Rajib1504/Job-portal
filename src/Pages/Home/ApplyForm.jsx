@@ -5,7 +5,7 @@ import useAuth from "../../Hooks/useAuth";
 import Swal from "sweetalert2";
 
 const ApplyForm = () => {
-  const { id } = useParams();
+  const { job_id } = useParams();
   const { user } = useAuth();
   //   console.log(id, user);
 
@@ -18,14 +18,14 @@ const ApplyForm = () => {
     const profileImage = form.profileImage.value;
     //     console.log(github, linkdin, resume, profileImage);
     const jobApplication = {
-      job_id: id,
+      job_id,
       Applicant_email: user.email,
       github,
       linkdin,
       resume,
       profileImage,
     };
-    // console.log(jobApplication);
+    console.log(jobApplication);
 
     fetch("http://localhost:9000/job-application", {
       method: "POST",

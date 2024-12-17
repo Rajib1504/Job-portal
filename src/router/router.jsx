@@ -78,8 +78,8 @@ const router = createBrowserRouter([
             <ViewApplication></ViewApplication>
           </PrivateRouter>
         ),
-        // Loader: ({ params }) =>
-        //   fetch(`http://localhost:9000/job-application/${params.job_id}`),
+        loader: ({ params }) =>
+          fetch(`http://localhost:9000/job-application/${params.job_id}`),
       },
     ],
   },
