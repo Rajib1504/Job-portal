@@ -1,10 +1,11 @@
 import React, { useContext } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
 import loginAnimation from "../../assets/lotie/login.json";
 import Lottie from "lottie-react";
 import AuthContext from "../../Context/AuthContext";
+import axios from "axios";
 const Login = () => {
-  const { Login, setUser, googleLogIn } = useContext(AuthContext);
+  const { signin, setUser, googleLogIn } = useContext(AuthContext);
   const navigate = useNavigate();
   const location = useLocation();
   console.log("locationin login page", location);
@@ -16,11 +17,18 @@ const Login = () => {
     const password = form.password.value;
     const user = { email, password };
     console.log(user);
-    Login(email, password)
+    signin(email, password)
       .then((data) => {
         const value = data.user;
-        //   console.log(value);
         setUser(value);
+        <Navigate to={"/home"}></Navigate>;
+        console.log(data.user.email);
+        const user = { email };
+        axios
+          .post("http://localhost:9000/jwt", user, { withCredentials: true })
+          .then((res) => {
+            console.log(res.data);
+          });
       })
       .catch((error) => {
         console.log(error.message);

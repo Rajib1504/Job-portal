@@ -4,6 +4,8 @@ import register from "../../assets/lotie/register.json";
 import Lottie from "lottie-react";
 
 import AuthContext from "../../Context/AuthContext";
+import axios from "axios";
+import Swal from "sweetalert2";
 
 const Register = () => {
   const { newUser, setUser, setLoader, googleLogIn } = useContext(AuthContext);
@@ -31,11 +33,27 @@ const Register = () => {
       .then((data) => {
         const value = data.user;
         //   setLoader(false);
+        Swal.fire({
+          position: "top-end",
+          icon: "success",
+          title: "register successfull",
+          showConfirmButton: false,
+          timer: 1500,
+        });
         setUser(value);
         console.log(value);
+        const user = { email: email };
+        axios.post("http://localhost:9000/jwt", user).then((data) => {
+          console.log(data);
+        });
       })
       .catch((error) => {
-        console.log(error.message);
+        Swal.fire({
+          position: "center",
+          icon: "error",
+          title: `${error.message}`,
+          showConfirmButton: true,
+        });
       });
   };
 
@@ -118,13 +136,13 @@ const Register = () => {
             {/* Submit Button */}
             <button
               type="submit"
-              className="w-full px-4 py-2 mt-4 text-white bg-gradient-to-r from-blue-500 to-purple-500 rounded-lg hover:from-blue-600 hover:to-purple-600 transform hover:scale-105 transition duration-300 ease-in-out hover:shadow-lg focus:outline-none"
+              className="w-full px-4 btn py-2 mt-4 text-white bg-gradient-to-r from-blue-500 to-purple-500 rounded-lg hover:from-blue-600 hover:to-purple-600 transform hover:scale-105 transition duration-300 ease-in-out hover:shadow-lg focus:outline-none"
             >
               Submit
             </button>
           </form>
           {/* Google Login Button */}
-          <button className="w-full px-4 py-2 mt-4 text-gray-700 border border-gray-300 rounded-lg hover:bg-gray-200 focus:outline-none">
+          <button className="w-full btn px-4 py-2 mt-4 text-gray-700 border border-gray-300 rounded-lg hover:bg-gray-200 focus:outline-none">
             <div
               onClick={handelGoogle}
               className="flex items-center gap-2 justify-center"
